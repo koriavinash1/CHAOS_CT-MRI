@@ -1,0 +1,6 @@
+*models*
+*logs*
+*DATA*
+*.pyc*
+*exps*
+*.ipynb_checkpoint*
