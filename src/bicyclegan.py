@@ -14,7 +14,7 @@ from torch.utils.data import DataLoader
 from torchvision import datasets
 from torch.autograd import Variable
 
-from models import *
+from GANmodels import *
 from datasets import *
 
 import torch.nn as nn
