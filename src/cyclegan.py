@@ -14,7 +14,7 @@ from torchvision import datasets
 from torch.autograd import Variable
 
 from GANmodels import *
-from SEGmodels import *
+from SEGmodel import *
 from datasets import *
 from utils import *
 
