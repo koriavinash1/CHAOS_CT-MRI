@@ -9,23 +9,39 @@ import numpy as np
 
 from torchvision.utils import save_image
 
-def background(self,data):
-		return data==0
+class dice_loss(object):
+    def __init__(self):
+        pass
 
-def opticdisk(self,data):
-    return data==1
+    def background(self, data):
+        return data == 0
 
-def opticcup(self,data):
-    return data==2
+    def liver(self, data):
+        return data == 1
 
+    def right_kidney(self, data):
+        return data == 2
 
-def get_dice_score(self,prediction,ground_truth):
-    masks=(self.background, self.opticdisk, self.opticcup)
-    pred=torch.exp(prediction)
-    p=np.uint8(np.argmax(pred.data.cpu().numpy(), axis=1))
-    gt=np.uint8(ground_truth.data.cpu().numpy())
-    wt,tc,et=[2*np.sum(func(p)*func(gt)) / (np.sum(func(p)) + np.sum(func(gt))+1e-3) for func in masks]
-    return wt,tc,et
+    def left_kidney(self, data):
+        return data == 3
+
+    def spleen(self, data):
+        return data == 4
+
+    def compute(self,prediction,ground_truth):
+        masks = [self.background, 
+                self.liver, 
+                self.right_kidney,
+                self.left_kidney,
+                self.spleen]
+        masks_weight = [1.0, 1.0, 1.0, 1.0, 1.0]
+        pred = torch.exp(prediction)
+        p = np.uint8(np.argmax(pred.data.cpu().numpy(), axis=1))
+        gt = np.uint8(ground_truth.data.cpu().numpy())
+        scores = np.array([2.* wt *np.sum(func(p)*func(gt))/(np.sum(func(p)) + np.sum(func(gt))+1e-3) \
+                    for func, wt in zip(masks, masks_weight)])
+        dice_score = np.mean(scores)
+        return 1.0 - dice_score
 
 class ReplayBuffer():
     def __init__(self, max_size=50):
