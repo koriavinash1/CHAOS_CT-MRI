@@ -8,6 +8,9 @@ base_path_mri = '../DATA/MR_data_batch1'
 dcm = []
 gt  = []
 
+if not os.path.exists('../csv_files'):
+        os.mkdir("../csv_files")
+
 patients = os.listdir(base_path_ct)
 for patient in patients:
     patient_dir = os.path.join(base_path_ct, patient)
@@ -30,9 +33,9 @@ df = df.sample(frac=1).reset_index(drop=True)
 
 len_ = len(df)
 print (len_)
-df[:int(0.8*len_)].to_csv('./train_CT.csv')
-df[int(0.8*len_):int(0.9*len_)].to_csv('./valid_CT.csv')
-df[int(0.9*len_):].to_csv('./test_CT.csv')
+df[:int(0.8*len_)].to_csv('../csv_files/train_CT.csv')
+df[int(0.8*len_):int(0.9*len_)].to_csv('../csv_files/valid_CT.csv')
+df[int(0.9*len_):].to_csv('../csv_files/test_CT.csv')
 
 
 # -----------------
@@ -58,6 +61,6 @@ df = df.sample(frac=1).reset_index(drop=True)
 
 len_ = len(df)
 print (len_)
-df[:int(0.8*len_)].to_csv('./train_MRI.csv')
-df[int(0.8*len_):int(0.9*len_)].to_csv('./valid_MRI.csv')
-df[int(0.9*len_):].to_csv('./test_MRI.csv')
+df[:int(0.8*len_)].to_csv('../csv_files/train_MRI.csv')
+df[int(0.8*len_):int(0.9*len_)].to_csv('../csv_files/valid_MRI.csv')
+df[int(0.9*len_):].to_csv('../csv_files/test_MRI.csv')
