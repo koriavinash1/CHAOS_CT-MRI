@@ -11,8 +11,8 @@ class ImageDataset(Dataset):
         self.transform = transforms.Compose(transforms_)
         self.unaligned = unaligned
 
-        self.files_A = sorted(glob.glob(os.path.join(root, '%s/A' % mode) + '/*.*'))
-        self.files_B = sorted(glob.glob(os.path.join(root, '%s/B' % mode) + '/*.*'))
+        self.files_A = sorted(glob.glob(os.path.join(root, '%s/MRI' % mode) + '/*.*'))
+        self.files_B = sorted(glob.glob(os.path.join(root, '%s/CT' % mode) + '/*.*'))
 
     def __getitem__(self, index):
         item_A = self.transform(Image.open(self.files_A[index % len(self.files_A)]))
@@ -22,7 +22,7 @@ class ImageDataset(Dataset):
         else:
             item_B = self.transform(Image.open(self.files_B[index % len(self.files_B)]))
 
-        return {'A': item_A, 'B': item_B}
+        return {'MRI': item_A, 'CT': item_B}
 
     def __len__(self):
         return max(len(self.files_A), len(self.files_B))
