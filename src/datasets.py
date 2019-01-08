@@ -62,7 +62,7 @@ class ImageDataset(Dataset):
 
         return image
 
-    def convertCTGT(self, image)
+    def convertCTGT(self, image):
         """
         """
         image[image == 255] = 1
@@ -86,7 +86,7 @@ class ImageDataset(Dataset):
         item_MRI_CT_GT = self.convertMRICT_GT(item_MRI_GT)        
         return {'MRI': item_MRI, 'CT': item_CT, \
                 'MRI_GT': item_MRI_GT, 'CT_GT': item_CT_GT, \
-                'MRI_CT_GT': item_MRI_CT_GT. 'CT_MRI_GT': item_CT_MRI_GT}
+                'MRI_CT_GT': item_MRI_CT_GT, 'CT_MRI_GT': item_CT_MRI_GT}
 
     def __len__(self):
         return max(len(self.files_MRI), len(self.files_CT))

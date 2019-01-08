@@ -100,6 +100,8 @@ else:
 lambda_cyc = 10
 lambda_id = 0.5 * lambda_cyc
 
+print (D_SEG_MRI)
+print (D_CT)
 # Optimizers
 optimizer_G = torch.optim.Adam(itertools.chain(G_MRI_CT.parameters(), G_CT_MRI.parameters()),
                                 lr=opt.lr, betas=(opt.b1, opt.b2))
@@ -126,16 +128,14 @@ fake_CT_buffer = ReplayBuffer()
 
 # Image transformations
 transforms_ = {'out_size': (256, 256)}
-
-
 # TODO:
 
 
 # Training data loader
-dataloader = DataLoader(ImageDataset("../csv_files", transforms_=transforms_),
+dataloader = DataLoader(ImageDataset("../csv_files", transforms=transforms_),
                         batch_size=opt.batch_size, shuffle=True, num_workers=opt.n_cpu)
 # Test data loader
-val_dataloader = DataLoader(ImageDataset("../csv_files", transforms_=transforms_, mode='valid'),
+val_dataloader = DataLoader(ImageDataset("../csv_files", transforms=transforms_, mode='valid'),
                         batch_size=5, shuffle=True, num_workers=1)
 
 
@@ -165,8 +165,8 @@ for epoch in range(opt.epoch, opt.n_epochs):
         real_CT = Variable(batch['CT'].type(Tensor))
 
         # Adversarial ground truths
-        valid = Variable(Tensor(np.ones((real_MRI.size(0), *patch))), requires_grad=False)
-        fake = Variable(Tensor(np.zeros((real_MRI.size(0), *patch))), requires_grad=False)
+        valid = Variable(Tensor(np.ones((real_MRI.size(0), 1))), requires_grad=False)
+        fake = Variable(Tensor(np.zeros((real_MRI.size(0), 1))), requires_grad=False)
 
         # CT MRI Segmentation Ground Truths
         CT_GT = Variable(batch['CT_GT'].type(Tensor))
