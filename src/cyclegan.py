@@ -35,7 +35,8 @@ parser.add_argument('--n_cpu', type=int, default=8, help='number of cpu threads 
 parser.add_argument('--img_height', type=int, default=256, help='size of image height')
 parser.add_argument('--img_width', type=int, default=256, help='size of image width')
 parser.add_argument('--channels', type=int, default=3, help='number of image channels')
-parser.add_argument('--nclasses', type=int, default=8, help='number of classes in segmentation network')
+parser.add_argument('--mri_nclasses', type=int, default=5, help='number of classes in MRI segmentation network')
+parser.add_argument('--ct_nclasses', type=int, default=2, help='number of classes in CT segmentation network')
 parser.add_argument('--sample_interval', type=int, default=100, help='interval between sampling images from generators')
 parser.add_argument('--checkpoint_interval', type=int, default=-1, help='interval between saving model checkpoints')
 parser.add_argument('--n_residual_blocks', type=int, default=9, help='number of residual blocks in generator')
@@ -124,21 +125,17 @@ fake_CT_buffer = ReplayBuffer()
 
 
 # Image transformations
-transforms_ = [ transforms.Resize(int(opt.img_height*1.12), Image.BICUBIC),
-                transforms.RandomCrop((opt.img_height, opt.img_width)),
-                transforms.RandomHorizontalFlip(),
-                transforms.ToTensor(),
-                transforms.Normalize((0.5,0.5,0.5), (0.5,0.5,0.5)) ]
+transforms_ = {'out_size': (256, 256)}
 
 
 # TODO:
 
 
 # Training data loader
-dataloader = DataLoader(ImageDataset("../../data/%s" % opt.dataset_name, transforms_=transforms_, unaligned=True),
+dataloader = DataLoader(ImageDataset("../csv_files", transforms_=transforms_),
                         batch_size=opt.batch_size, shuffle=True, num_workers=opt.n_cpu)
 # Test data loader
-val_dataloader = DataLoader(ImageDataset("../../data/%s" % opt.dataset_name, transforms_=transforms_, unaligned=True, mode='test'),
+val_dataloader = DataLoader(ImageDataset("../csv_files", transforms_=transforms_, mode='valid'),
                         batch_size=5, shuffle=True, num_workers=1)
 
 
@@ -172,11 +169,11 @@ for epoch in range(opt.epoch, opt.n_epochs):
         fake = Variable(Tensor(np.zeros((real_MRI.size(0), *patch))), requires_grad=False)
 
         # CT MRI Segmentation Ground Truths
-        CT_GT = 
-        CT_MRI_GT = 
+        CT_GT = Variable(batch['CT_GT'].type(Tensor))
+        CT_MRI_GT = Variable(batch['CT_MRI_GT'].type(Tensor))
 
-        MRI_GT = 
-        MRI_CT_GT = 
+        MRI_GT = Variable(batch['MRI_GT'].type(Tensor))
+        MRI_CT_GT = Variable(batch['MRI_CT_GT'].type(Tensor))
 
         # TODO:
 
