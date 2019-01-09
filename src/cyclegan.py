@@ -107,8 +107,8 @@ optimizer_G = torch.optim.Adam(itertools.chain(G_MRI_CT.parameters(), G_CT_MRI.p
                                 lr=opt.lr, betas=(opt.b1, opt.b2))
 optimizer_D_MRI = torch.optim.Adam(D_MRI.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
 optimizer_D_CT = torch.optim.Adam(D_CT.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
-optimizer_D_SEG_MRI = torch.optim.Adam(D_SEG_MRI.parametrs(), lr=opt.lr, betas=(opt.b1, opt.b2))
-optimizer_D_SEG_CT = torch.optim.Adam(D_SEG_CT.parametrs(), lr=opt.lr, betas=(opt.b1, opt.b2))
+optimizer_D_SEG_MRI = torch.optim.Adam(D_SEG_MRI.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
+optimizer_D_SEG_CT = torch.optim.Adam(D_SEG_CT.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
 
 
 # Learning rate update schedulers
@@ -132,10 +132,10 @@ transforms_ = {'out_size': (256, 256)}
 
 
 # Training data loader
-dataloader = DataLoader(ImageDataset("../csv_files", transforms=transforms_),
+dataloader = DataLoader(ImageDataset("../csv_files", transforms_=transforms_),
                         batch_size=opt.batch_size, shuffle=True, num_workers=opt.n_cpu)
 # Test data loader
-val_dataloader = DataLoader(ImageDataset("../csv_files", transforms=transforms_, mode='valid'),
+val_dataloader = DataLoader(ImageDataset("../csv_files", transforms_=transforms_, mode='valid'),
                         batch_size=5, shuffle=True, num_workers=1)
 
 
