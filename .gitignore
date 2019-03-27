@@ -1,5 +1,5 @@
-*logs*
-*DATA*
-*.pyc*
-*exps*
-*.ipynb_checkpoint*
+*data*
+*images*
+*runs*
+*saved_logs*
+*saved_models*
